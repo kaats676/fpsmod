@@ -12,25 +12,21 @@ public class FpsOverlay {
     public void onRenderGui(RenderGameOverlayEvent.Text event) {
         Minecraft mc = Minecraft.getInstance();
         
-        // ✅ В official mappings используется getInstance(), а не прямой доступ
-        if (mc.player == null || mc.level == null) {  // ← level вместо world!
+        if (mc.player == null || mc.level == null) {
             return;
         }
         
-        // ✅ options вместо gameSettings!
-        if (mc.options.hideGui) {  // ← options.hideGui!
+        if (mc.options.hideGui) {
             return;
         }
         
-        // ✅ В official mappings debugFPS - это статическое поле
-        int fps = Minecraft.debugFPS;
+        // ✅ В официальных маппингах 1.16.5 поле называется getFps()
+        int fps = mc.getFps();
         String text = "FPS: " + fps;
         
-        // ✅ font вместо fontRenderer!
         FontRenderer font = mc.font;
         MatrixStack stack = event.getMatrixStack();
         
-        // ✅ В 1.16.5 с official mappings есть drawString с тенью
         font.drawShadow(stack, text, 10, 10, 0xFFFFFF);
     }
 }
