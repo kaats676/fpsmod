@@ -7,6 +7,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class FpsOverlay {
+    
+    // ✅ Переменные на уровне класса — сохраняют состояние
+    private long lastTime = 0;
+    private int fps = 0;
+    private int frames = 0;
 
     @SubscribeEvent
     public void onRenderGui(RenderGameOverlayEvent.Text event) {
@@ -20,8 +25,15 @@ public class FpsOverlay {
             return;
         }
         
-        // ✅ В официальных маппингах 1.16.5 поле называется getFps()
-        int fps = mc.getFps();
+        // Считаем FPS
+        frames++;
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTime >= 1000) {
+            fps = frames;
+            frames = 0;
+            lastTime = currentTime;
+        }
+        
         String text = "FPS: " + fps;
         
         FontRenderer font = mc.font;
