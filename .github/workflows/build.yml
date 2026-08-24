@@ -36,8 +36,11 @@ jobs:
         java -version
         gradle --version
         
-    - name: Build with Gradle
-      run: gradle clean build --stacktrace
+    - name: Build with Gradle (full debug)
+      run: gradle clean compileJava --stacktrace --info --scan
+      
+    - name: Build full mod
+      run: gradle build --stacktrace
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
