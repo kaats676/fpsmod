@@ -1,0 +1,28 @@
+# Forge Mod Descriptor for Minecraft 1.16.5
+# Format: TOML (Tom's Obvious, Minimal Language)
+
+modLoader="javafml"
+loaderVersion="[32,)"  # Forge loader version range
+
+[[mods]]
+modId="fpsmod"          # Must match @Mod("fpsmod") in Java code
+version="1.0.0"
+displayName="FPS Display"
+description="Displays frames per second (FPS) in the top-right corner. Hides when F1 is pressed."
+authors="kaats676"      # GitHub username
+
+# Forge dependency
+[[dependencies.fpsmod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36.2,37)"  # Forge 36.2.x for 1.16.5
+    ordering="NONE"
+    side="CLIENT"        # Only needed on client side
+
+# Minecraft dependency
+[[dependencies.fpsmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"  # Only for 1.16.5
+    ordering="NONE"
+    side="CLIENT"
