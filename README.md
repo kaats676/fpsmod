@@ -27,4 +27,13 @@ The counter automatically hides when you press **F1** (hide GUI).
    - or [Modrinth](https://modrinth.com/) (if published).
 3. Place the `.jar` into your `mods` folder.
 4. Launch the Game
-*codes a ai*
+
+
+
+
+
+
+
+
+
+*codes by DeepSeek and AI*
