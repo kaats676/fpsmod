@@ -21,8 +21,8 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         
-    - name: Clean Gradle cache (fix mapping issues)
-      run: rm -rf ~/.gradle/caches/forge_gradle/
+    - name: Clean Gradle cache
+      run: rm -rf ~/.gradle/caches/
         
     - name: Download and install Gradle 6.8.3
       run: |
