@@ -1,0 +1,113 @@
+/*
+ * ForgeGradle 4.1+ Build Script
+ * Compatible with Minecraft 1.16.5 and Java 8
+ * Uses Gradle 6.8.3 wrapper
+ */
+
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }  // Forge Maven
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        // Version 4.1+ works with Java 8; version 5.1+ requires Java 16
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = '1.0.0'
+group = 'com.kaats676.fpsmod'   // GitHub username: kaats676
+archivesBaseName = 'fpsmod'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+// ForgeGradle 4.1+ supports Java 8 toolchain
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+    // Official Mojang mappings for maximum compatibility
+    
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                fpsmod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                fpsmod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'fpsmod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            mods {
+                fpsmod {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'Forge Maven'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    // Both repositories are required:
+    // - buildscript block: For downloading ForgeGradle plugin
+    // - main block: For resolving 'net.minecraftforge:forge' dependency
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
+    // Forge version 36.2.34 is the latest stable for 1.16.5
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": "fpsmod",
+            "Specification-Vendor": "kaats676",
+            "Specification-Version": "1",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"kaats676",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
