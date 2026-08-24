@@ -19,7 +19,7 @@ archivesBaseName = 'fpsmod'
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
-    // ✅ Исправлено: stable маппинги вместо official
+    // Используем stable маппинги (работают с Java 8 и ForgeGradle 4.1)
     mappings channel: 'stable', version: '39-1.16'
     
     runs {
