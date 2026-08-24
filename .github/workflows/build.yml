@@ -21,13 +21,15 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         
-    - name: Install Gradle 6.8.3
+    - name: Download and install Gradle 6.8.3
       run: |
-        sudo apt-get update
-        sudo apt-get install gradle -y
-        # Убедимся, что используется нужная версия
-        gradle --version
+        wget https://services.gradle.org/distributions/gradle-6.8.3-bin.zip
+        unzip gradle-6.8.3-bin.zip
+        echo "$PWD/gradle-6.8.3/bin" >> $GITHUB_PATH
         
+    - name: Verify Gradle version
+      run: gradle --version
+      
     - name: Build with Gradle
       run: gradle clean build
       
