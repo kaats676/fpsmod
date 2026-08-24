@@ -13,37 +13,26 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Set up JDK 8
+    - name: Set up JDK 16
       uses: actions/setup-java@v4
       with:
-        java-version: '8'
+        java-version: '16'
         distribution: 'adopt'
         
-    - name: Show Java files (debug)
-      run: |
-        echo "=== Java files ==="
-        find src -name "*.java" -type f
-        echo "=== Content of FpsMod.java ==="
-        cat src/main/java/com/kaats676/fpsmod/FpsMod.java 2>/dev/null || echo "File not found!"
-        echo "=== Content of FpsOverlay.java ==="
-        cat src/main/java/com/kaats676/fpsmod/FpsOverlay.java 2>/dev/null || echo "File not found!"
+    - name: Clean Gradle cache
+      run: rm -rf ~/.gradle/caches/
         
-    - name: Download Gradle 6.8.3
+    - name: Download and install Gradle 7.2
       run: |
-        wget https://services.gradle.org/distributions/gradle-6.8.3-bin.zip
-        unzip gradle-6.8.3-bin.zip
-        echo "$PWD/gradle-6.8.3/bin" >> $GITHUB_PATH
+        wget https://services.gradle.org/distributions/gradle-7.2-bin.zip
+        unzip gradle-7.2-bin.zip
+        chmod +x gradle-7.2/bin/gradle
+        echo "$PWD/gradle-7.2/bin" >> $GITHUB_PATH
         
-    - name: Compile with full error output
-      run: |
-        gradle clean compileJava --stacktrace 2>&1 | tee compile.log
-        echo "=== Full compile log ==="
-        cat compile.log
-        
-    - name: Build full mod
-      run: gradle build --stacktrace
+    - name: Build with Gradle
+      run: gradle clean build --stacktrace
       
-    - name: Upload
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: fps-mod
