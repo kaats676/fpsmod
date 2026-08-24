@@ -3,8 +3,6 @@ name: Build Minecraft Mod
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -21,28 +19,31 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         
-    - name: Clean Gradle cache
-      run: rm -rf ~/.gradle/caches/
+    - name: Show Java files (debug)
+      run: |
+        echo "=== Java files ==="
+        find src -name "*.java" -type f
+        echo "=== Content of FpsMod.java ==="
+        cat src/main/java/com/kaats676/fpsmod/FpsMod.java 2>/dev/null || echo "File not found!"
+        echo "=== Content of FpsOverlay.java ==="
+        cat src/main/java/com/kaats676/fpsmod/FpsOverlay.java 2>/dev/null || echo "File not found!"
         
-    - name: Download and install Gradle 6.8.3
+    - name: Download Gradle 6.8.3
       run: |
         wget https://services.gradle.org/distributions/gradle-6.8.3-bin.zip
         unzip gradle-6.8.3-bin.zip
-        chmod +x gradle-6.8.3/bin/gradle
         echo "$PWD/gradle-6.8.3/bin" >> $GITHUB_PATH
         
-    - name: Verify environment
+    - name: Compile with full error output
       run: |
-        java -version
-        gradle --version
+        gradle clean compileJava --stacktrace 2>&1 | tee compile.log
+        echo "=== Full compile log ==="
+        cat compile.log
         
-    - name: Build with Gradle (full debug)
-      run: gradle clean compileJava --stacktrace --info --scan
-      
     - name: Build full mod
       run: gradle build --stacktrace
       
-    - name: Upload build artifacts
+    - name: Upload
       uses: actions/upload-artifact@v4
       with:
         name: fps-mod
