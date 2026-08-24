@@ -26,15 +26,5 @@ The counter automatically hides when you press **F1** (hide GUI).
    - [GitHub Releases](https://github.com/kaats676/fpsmod/releases)
    - or [Modrinth](https://modrinth.com/) (if published).
 3. Place the `.jar` into your `mods` folder.
-4. Launch the game.
-
----
-
-## 🛠 Building from Source
-
-If you want to compile the mod yourself:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/kaats676/fpsmod
-   cd fpsmod
+4. Launch the Game
+*codes a ai*
